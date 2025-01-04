@@ -132,6 +132,7 @@ class Rocket64b1 extends Config(
 class Rocket64b2 extends Config(
   new WithNBreakpoints(8) ++
   new WithNBigCores(2)    ++
+  new WithHypervisor      ++
   new RocketBaseConfig)
 
 /* With exposed BSCAN port - the name must end with 'e' */

@@ -1,0 +1,5 @@
+--- generators/gemmini
++++ generators/gemmini
+@@ -1 +1 @@
+-Subproject commit 709bc56b6dd859fc2b1a9027a96a0b5be6ad7ed6
++Subproject commit 709bc56b6dd859fc2b1a9027a96a0b5be6ad7ed6-dirty

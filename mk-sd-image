@@ -105,11 +105,12 @@ pushd debian-riscv64/rootfs
 popd
 
 pushd debian-riscv64/boot
-  sudo mkdir extlinux
-  sudo cp ../extlinux.conf extlinux
-  sudo cp ../initrd extlinux/initrd-$KERNEL_VER.img
-  sudo cp ../../linux-stable/arch/riscv/boot/Image extlinux/image-$KERNEL_VER
+  #sudo mkdir extlinux
+  #sudo cp ../extlinux.conf extlinux
+  #sudo cp ../initrd extlinux/initrd-$KERNEL_VER.img
+  #sudo cp ../../linux-stable/arch/riscv/boot/Image extlinux/image-$KERNEL_VER
   sudo cp ../../workspace/boot.elf boot.elf
+  sudo cp ../../workspace/hikami.elf hikami.elf
 popd
 
 sudo chown root:root debian-riscv64/rootfs

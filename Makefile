@@ -99,7 +99,7 @@ debian-riscv64/rootfs.tar.gz:
 .PHONY: linux
 linux: linux-stable/arch/riscv/boot/Image
 
-CROSS_COMPILE_LINUX = /usr/bin/riscv64-linux-gnu-
+CROSS_COMPILE_LINUX = /opt/riscv/bin/riscv64-unknown-linux-gnu-
 
 workspace/patch-linux-done: patches/linux.patch patches/fpga-axi-sdc.c patches/fpga-axi-eth.c patches/linux.config
 	if [ -s patches/linux.patch ] ; then cd linux-stable && ( git apply -R --check ../patches/linux.patch 2>/dev/null || git apply ../patches/linux.patch ) ; fi
@@ -146,7 +146,10 @@ workspace/patch-u-boot-done: u-boot/configs/vivado_riscv64_defconfig
 	cp -p patches/u-boot/vivado_riscv64.h u-boot/include/configs
 	mkdir -p workspace && touch workspace/patch-u-boot-done
 
-u-boot/u-boot-nodtb.bin: workspace/patch-u-boot-done $(U_BOOT_SRC)
+workspace/hikami.elf: 
+	cp /home/takana/mitou/hikami/target/riscv64imac-unknown-none-elf/release/hikami workspace/hikami.elf
+
+u-boot/u-boot-nodtb.bin: workspace/patch-u-boot-done $(U_BOOT_SRC) workspace/hikami.elf
 	make -C u-boot CROSS_COMPILE=$(CROSS_COMPILE_LINUX) BOARD=vivado_riscv64 vivado_riscv64_config
 	make -C u-boot \
 	  BOARD=vivado_riscv64 \
@@ -167,7 +170,7 @@ workspace/boot.elf: opensbi/build/platform/vivado-risc-v/firmware/fw_payload.elf
 	mkdir -p workspace
 	cp $< $@
 
-opensbi/build/platform/vivado-risc-v/firmware/fw_payload.elf: $(wildcard patches/opensbi/*) u-boot/u-boot-nodtb.bin
+opensbi/build/platform/vivado-risc-v/firmware/fw_payload.elf: $(wildcard patches/opensbi/*) u-boot/u-boot-nodtb.bin 
 	mkdir -p opensbi/platform/vivado-risc-v
 	cp -p -r patches/opensbi/* opensbi/platform/vivado-risc-v
 	make -C opensbi CROSS_COMPILE=$(CROSS_COMPILE_LINUX) PLATFORM=vivado-risc-v \
@@ -210,7 +213,7 @@ else
   MEMORY_ADDR_RANGE64 = 0x0 0x80000000 $(shell echo - | awk '{CPU=$(MEMORY_SIZE_CPU); DDR=$(MEMORY_SIZE); $(MEMORY_SIZE_AWK)}')
 endif
 
-SBT := java -Xmx12G -Xss8M $(JAVA_OPTIONS) -Dsbt.io.virtual=false -Dsbt.server.autostart=false -jar $(realpath sbt-launch.jar)
+SBT := java -Xmx12G -Xss8M $(JAVA_OPTIONS) -Dsbt.io.virtual=false -Dsbt.server.autostart=false -Djava.security.manager=allow -jar $(realpath sbt-launch.jar)
 
 CHISEL_SRC_DIRS = \
   src/main \
