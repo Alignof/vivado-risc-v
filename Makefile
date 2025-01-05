@@ -176,9 +176,9 @@ opensbi/build/platform/vivado-risc-v/firmware/fw_payload.elf: $(wildcard patches
 	make -C opensbi CROSS_COMPILE=$(CROSS_COMPILE_LINUX) PLATFORM=vivado-risc-v \
 	 FW_PAYLOAD_PATH=`realpath u-boot/u-boot-nodtb.bin`
 
-opensbi-qemu: u-boot-qemu
+opensbi-qemu: u-boot/u-boot-nodtb.bin
 	cd qemu && if [ ! -d opensbi ]; then git clone ../opensbi; fi
-	cd qemu && make -C opensbi clean && make -C opensbi PLATFORM=generic CROSS_COMPILE=$(CROSS_COMPILE_LINUX) FW_PAYLOAD_PATH=../u-boot/u-boot.bin
+	cd qemu && make -C opensbi clean && make -C opensbi PLATFORM=generic CROSS_COMPILE=$(CROSS_COMPILE_LINUX) FW_PAYLOAD_PATH=../u-boot/u-boot-nodtb.bin
 
 # --- generate HDL ---
 
