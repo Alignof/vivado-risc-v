@@ -125,7 +125,8 @@ u-boot: u-boot/u-boot-nodtb.bin
 U_BOOT_SRC = $(wildcard patches/u-boot/*/*) \
   patches/u-boot/vivado_riscv64_defconfig \
   patches/u-boot/vivado_riscv64.h \
-  patches/u-boot.patch
+  patches/u-boot.patch \
+  u-boot/configs/vivado_riscv64_defconfig
 
 u-boot/configs/vivado_riscv64_defconfig: patches/u-boot/vivado_riscv64_defconfig Makefile
 	cp patches/u-boot/vivado_riscv64_defconfig u-boot/configs
