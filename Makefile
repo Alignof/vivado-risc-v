@@ -148,7 +148,7 @@ workspace/patch-u-boot-done: u-boot/configs/vivado_riscv64_defconfig
 	mkdir -p workspace && touch workspace/patch-u-boot-done
 
 workspace/hikami.elf: 
-	cp /home/takana/mitou/hikami/target/riscv64imac-unknown-none-elf/release/hikami workspace/hikami.elf
+	cp /home/takana/mitou/hikami/target/riscv64imac-unknown-none-elf/debug/hikami workspace/hikami.elf
 
 u-boot/u-boot-nodtb.bin: workspace/patch-u-boot-done $(U_BOOT_SRC) workspace/hikami.elf
 	make -C u-boot CROSS_COMPILE=$(CROSS_COMPILE_LINUX) BOARD=vivado_riscv64 vivado_riscv64_config
