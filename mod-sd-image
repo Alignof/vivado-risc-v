@@ -1,0 +1,39 @@
+#!/bin/bash
+
+SD_IMG=debian-riscv64/debian-riscv64.sd.img
+SD_LOOP=$(sudo losetup --find --partscan --show $SD_IMG)
+echo "SD image device: ${SD_LOOP}"
+
+cp /home/takana/mitou/hikami/target/riscv64imac-unknown-none-elf/debug/hikami workspace/hikami.elf
+
+mkdir -p debian-riscv64/boot
+sudo mount ${SD_LOOP}p1 debian-riscv64/boot
+
+pushd debian-riscv64/boot
+  sudo cp ../../workspace/hikami.elf hikami.elf
+popd
+
+umount_with_retry() {
+    local device=$1
+    local max_attempts=3
+    local attempt=1
+
+    while [ $attempt -le $max_attempts ]; do
+        sudo umount -l $device
+        if ! mount | grep -q $device; then
+            echo "$device successfully unmounted."
+            return 0
+        else
+            echo "Unmount attempt $attempt for $device failed. Retrying in 1 second..."
+            sleep 1
+            attempt=$((attempt + 1))
+        fi
+    done
+
+    echo "Failed to unmount $device after $max_attempts attempts."
+    return 1
+}
+
+umount_with_retry ${SD_LOOP}p1 || exit 1
+sudo fsck -f -p -T ${SD_LOOP}p1 || true
+sudo losetup -d ${SD_LOOP}
