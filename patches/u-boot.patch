@@ -20,3 +20,49 @@ index ba29e70acf..a572610f2a 100644
  source "board/sifive/unleashed/Kconfig"
  source "board/sifive/unmatched/Kconfig"
  source "board/openpiton/riscv64/Kconfig"
+diff --git a/cmd/elf.c b/cmd/elf.c
+index d75b21461c..d2c06ced40 100644
+--- a/cmd/elf.c
++++ b/cmd/elf.c
+@@ -13,6 +13,7 @@
+ #include <log.h>
+ #include <net.h>
+ #include <vxworks.h>
++#include <asm/global_data.h>
+ #ifdef CONFIG_X86
+ #include <vbe.h>
+ #include <asm/cache.h>
+@@ -20,6 +21,8 @@
+ #include <linux/linkage.h>
+ #endif
+ 
++DECLARE_GLOBAL_DATA_PTR;
++
+ /* Allow ports to override the default behavior */
+ static unsigned long do_bootelf_exec(ulong (*entry)(int, char * const[]),
+ 				     int argc, char *const argv[])
+@@ -74,6 +77,11 @@ int do_bootelf(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
+ 
+ 	printf("## Starting application at 0x%08lx ...\n", addr);
+ 
++    if (!argc || !argv) {
++        argc = gd->arch.boot_hart;
++        argv = gd->arch.firmware_fdt_addr;
++    }
++
+ 	/*
+ 	 * pass address parameter as argv[0] (aka command name),
+ 	 * and all remaining args
+diff --git a/configs/qemu-riscv64_smode_defconfig b/configs/qemu-riscv64_smode_defconfig
+index f575c127b7..cacb0453e9 100644
+--- a/configs/qemu-riscv64_smode_defconfig
++++ b/configs/qemu-riscv64_smode_defconfig
+@@ -14,6 +14,8 @@ CONFIG_DISPLAY_CPUINFO=y
+ CONFIG_DISPLAY_BOARDINFO=y
+ CONFIG_CMD_BOOTEFI_SELFTEST=y
+ CONFIG_CMD_NVEDIT_EFI=y
++CONFIG_BOOTCOMMAND="echo ${fdtcontroladdr}; scsi scan; load scsi 0 0x80300000 /hikami.elf; bootelf 0x80300000"
++
+ # CONFIG_CMD_MII is not set
+ CONFIG_OF_BOARD=y
+ CONFIG_SYS_RELOC_GD_ENV_ADDR=y

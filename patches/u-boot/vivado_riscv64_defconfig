@@ -17,7 +17,7 @@ CONFIG_SYS_RELOC_GD_ENV_ADDR=y
 CONFIG_DM_MTD=y
 CONFIG_OF_CONTROL=y
 CONFIG_OF_BOARD=y
-CONFIG_BOOTCOMMAND="echo 'Welcome to U-Boot'; load mmc 0:1 0x80300000 /hikami.elf; bootelf -p 0x80300000"
+CONFIG_BOOTCOMMAND="echo 'Welcome to U-Boot'; load mmc 0:1 0x80300000 /hikami.elf; bootelf 0x80300000"
 
 #CONFIG_LOG=y
 #CONFIG_MAX_LOG_LEVEL=LOGL_DEBUG
