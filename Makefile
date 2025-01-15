@@ -159,8 +159,15 @@ u-boot/u-boot-nodtb.bin: workspace/patch-u-boot-done $(U_BOOT_SRC) workspace/hik
 	  KCFLAGS='-O1 -gno-column-info' \
 	  u-boot-nodtb.bin
 
-u-boot-qemu:
+workspace/patch-qemu-u-boot-done:
 	cd qemu/ && if [ ! -d u-boot ]; then git clone ../u-boot; fi && cd u-boot && git checkout v2022.01
+	if [ -s patches/u-boot.patch ] ; then cd qemu/u-boot && ( git apply -R --check ../../patches/u-boot.patch 2>/dev/null || git apply ../../patches/u-boot.patch ) ; fi
+	mkdir -p qemu/u-boot/board/vivado_riscv
+	cp -p -r patches/u-boot/vivado_riscv64 qemu/u-boot/board/vivado_riscv
+	cp -p patches/u-boot/vivado_riscv64.h qemu/u-boot/include/configs
+	mkdir -p workspace && touch workspace/patch-qemu-u-boot-done
+
+u-boot-qemu: workspace/patch-qemu-u-boot-done
 	cd qemu/u-boot && export CROSS_COMPILE=$(CROSS_COMPILE_LINUX) && make qemu-riscv64_smode_defconfig && make -j$(nproc)
 
 # --- build RISC-V Open Source Supervisor Binary Interface (OpenSBI) ---
