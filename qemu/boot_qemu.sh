@@ -10,8 +10,9 @@ then
     make opensbi-qemu
 fi
 
-qemu-system-riscv64 -machine virt -m 8G -nographic \
+qemu-system-riscv64 -machine virt -m 2G -nographic \
 -bios qemu/opensbi/build/platform/generic/firmware/fw_payload.bin \
+-cpu rv64,smstateen=true \
 -smp cores=1 \
 -device virtio-net-device,netdev=net0 \
 -netdev user,id=net0,tftp=tftp,hostfwd=tcp::2222-:22  \
