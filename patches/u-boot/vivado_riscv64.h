@@ -8,7 +8,7 @@
 #define CONFIG_SYS_SDRAM_BASE           0x80000000
 #define CONFIG_SYS_INIT_RAM_ADDR        0x80000000
 #define CONFIG_SYS_INIT_RAM_SIZE        0x00200000
-#define CONFIG_STANDALONE_LOAD_ADDR     0x80201000
+#define CONFIG_STANDALONE_LOAD_ADDR     0x80200000
 
 #define MMU_SECTION_SIZE 0x1000
 
@@ -23,8 +23,8 @@
 #include <config_distro_bootcmd.h>
 
 #define CONFIG_EXTRA_ENV_SETTINGS \
-        "bootm_low=0x80300000\0" \
-        "bootm_size=0x00800000\0" \
+        "bootm_low=0x83000000\0" \
+        "bootm_size=0x02000000\0" \
         "initrd_high=0xffffffffffffffff\0" \
         BOOTENV
 
