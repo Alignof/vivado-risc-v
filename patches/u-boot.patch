@@ -61,7 +61,7 @@ index f575c127b7..cacb0453e9 100644
  CONFIG_DISPLAY_BOARDINFO=y
  CONFIG_CMD_BOOTEFI_SELFTEST=y
  CONFIG_CMD_NVEDIT_EFI=y
-+CONFIG_BOOTCOMMAND="bdinfo; scsi scan; load scsi 0 0x100000000 /hikami.elf; bootelf 0x100000000"
++CONFIG_BOOTCOMMAND="bdinfo; scsi scan; load scsi 0 0x80800000 /hikami.elf; bootelf 0x80800000"
 +
  # CONFIG_CMD_MII is not set
  CONFIG_OF_BOARD=y

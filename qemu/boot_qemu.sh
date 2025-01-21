@@ -10,7 +10,8 @@ then
     make opensbi-qemu
 fi
 
-qemu-system-riscv64 -machine virt -m 2G -nographic \
+qemu-system-riscv64 -machine virt -m 512M -nographic \
+-S -gdb tcp::10000 \
 -bios qemu/opensbi/build/platform/generic/firmware/fw_payload.bin \
 -cpu rv64,smstateen=true \
 -smp cores=1 \
