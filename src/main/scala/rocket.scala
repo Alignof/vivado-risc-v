@@ -103,6 +103,7 @@ class Rocket32s16 extends Config(
  * It also sets right core clock frequency.
  */
 class RocketBaseConfig extends Config(
+  new WithHypervisor ++
   new WithBootROMFile("workspace/bootrom.img") ++
   new WithExtMemSize(0x380000000L) ++
   new WithNExtTopInterrupts(8) ++
@@ -132,7 +133,6 @@ class Rocket64b1 extends Config(
 class Rocket64b2 extends Config(
   new WithNBreakpoints(8) ++
   new WithNBigCores(2)    ++
-  new WithHypervisor      ++
   new RocketBaseConfig)
 
 /* With exposed BSCAN port - the name must end with 'e' */
