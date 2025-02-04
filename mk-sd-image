@@ -102,6 +102,7 @@ pushd debian-riscv64/rootfs
     sudo chmod 600 swapfile
     sudo mkswap swapfile
   fi
+  sudo mv usr/lib/systemd/system/ifupdown-pre.service usr/lib/systemd/system/ifupdown-pre.service.disable
 popd
 
 pushd debian-riscv64/boot
