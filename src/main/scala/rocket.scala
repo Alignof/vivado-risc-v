@@ -126,11 +126,13 @@ class RocketWideBusConfig extends Config(
   new BaseConfig)
 
 class Rocket64b1 extends Config(
+  new WithHypervisor ++
   new WithNBreakpoints(8) ++
   new WithNBigCores(1)    ++
   new RocketBaseConfig)
 
 class Rocket64b2 extends Config(
+  new WithHypervisor ++
   new WithNBreakpoints(8) ++
   new WithNBigCores(2)    ++
   new RocketBaseConfig)
